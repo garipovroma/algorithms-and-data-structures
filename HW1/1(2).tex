@@ -1,0 +1,49 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc} % если ваш файл содержит русский текст, нужно указать кодировку
+\usepackage[russian]{babel} % для того, чтобы писать русский текст
+\usepackage{amsmath,amssymb}
+\usepackage{tipa}
+\usepackage{hyperref} % для вставки ссылок
+\usepackage{graphicx}
+\binoppenalty=10000
+\relpenalty=10000
+\title{Homework 1}
+\date{10.09.2019}
+\author{Roman Garipov}
+
+% до этого места была преамбула, тут можно задавать разные значения переменных, включать пакеты, а также указывать вещи, которые не суждено поменять посреди документа
+\begin{document}
+  \pagenumbering{gobble} % сейчас будет титульная страницу, отключим нумерацию страниц
+  \maketitle % эта команда печатает титульную страницу
+  \newpage % эта команда начинает новую страницу
+  \pagenumbering{arabic} % включим нумерацию страниц обратно
+
+\section{Задача \textnumero 1}
+Докажите по определению, что 	$ \frac{n^{3}}{6} - 7n^{2} = \Omega(n^{3})$.
+$$$$
+
+
+   $ \frac{n^{3}}{6} - 7n^{2} = \Omega(n^{3})$ значит, что $ \exists $ $c > 0,  n \in \mathbb{N}: \forall$ $n_{0} > n, f(n_{0}) \geqslant cg(n_{0})$. 
+   Чтобы показать, что это правда, достаточно найти такие $c$ и $n$, что выполняется определение. 
+   
+	Выберем $c = \frac{1}{36}$. 
+   
+   Тогда получим : $ \frac{n^{3}}{6} - 7n^{2} \geqslant \frac{cn^{3}}{36} $
+   
+    $n^{3} - 42n^{2} \geqslant \frac{cn^{3}}{6}$; 
+    
+    $\frac{5}{6}n^{3} - 42n^{3} \geqslant 0$;
+    
+     $5n^{3} - 252n^{2} \geqslant 0$; 
+     
+      $n^{2}(5n - 252) \geqslant 0$ 
+    
+     $5n - 252 \geqslant 0$; 
+     
+     $n \geqslant \frac{252}{5}$; $ n \geqslant 50.4$; 
+     
+     $n \geqslant 51$.
+     
+      Мы нашли такие $c$ и $n$, что определение выполняется, следовательно доказали равенство.
+\end{document}
