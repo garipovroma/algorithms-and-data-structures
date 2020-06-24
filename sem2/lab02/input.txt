@@ -1,0 +1,18 @@
+delete i
+delete x
+put q i
+put u n
+delete v
+put q j
+delete q
+put d q
+delete q
+delete d
+delete d
+put q s
+next t
+put n o
+prev q
+delete q
+put c v
+delete n
