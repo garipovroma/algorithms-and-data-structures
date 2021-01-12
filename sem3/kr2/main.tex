@@ -1,0 +1,129 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc} 
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{tipa}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{fancyhdr}
+\usepackage{alltt}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[hidelinks]{hyperref}
+\usepackage{centernot}
+\usepackage{amsthm}
+\usepackage{multicol}
+\usepackage[left=2cm,right=2cm,
+    top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\binoppenalty=10000
+\relpenalty=10000
+
+\theoremstyle{plain}
+
+%\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Утверждение}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+
+\definecolor{myblue}{RGB}{0, 0, 255}
+\newcommand{\notin}[#1]{\centernot\in #1}
+\newcommand{\complexity}[1]{$\mathcal{O}(#1)$}
+
+
+\title{Алгоритмы и Структуры Данных \Large{\href{https://nerc.itmo.ru/teaching/algo/year2019/quiz-06/81205cec60bda1c11261160292e6152d.pdf}{\textcolor{myblue}{КР2 Вариант 07}}}}
+\date{26.12.2020}
+
+\author{Гарипов Роман М3238}
+
+
+
+\begin{document}
+  \pagenumbering{gobble} 
+  \maketitle
+  \pagenumbering{arabic}
+\section*{Задача \textnumero 1}
+\subsection*{Решение}
+    Утверждается, что в произвольной сети $G$ в которой существует положительный поток, можно составить функцию $l$ длин рёбер таким образом :\begin{equation*}
+        l(uv) = 
+         \begin{cases}
+           1 &\text{$u \in S, v \in T$}\\
+           0 &\text{ иначе }
+         \end{cases}
+        \mbox{(где ($\langle S, T \rangle$ - минимальный разрез в $G$)}
+    \end{equation*}
+    так, чтобы выполнялось равенство:
+    \begin{equation*}
+        |f_{max}| = \frac{V(G)}{\rho(s, t)}
+    \end{equation*}
+    \begin{theorem*}
+    $V(G) = c(S, T)$
+    \end{theorem*}
+    \begin{proof}
+        Формально, распишем объём сети: 
+        \begin{equation*}
+        V(G) = \sum_{u, v} c(u, v)\cdot l(u, v) = \sum_{\substack{u \in S, \\ v \in T}} c(u, v) = c(S, T)
+    \end{equation*}
+    \end{proof}
+    \begin{theorem*}
+         При данном $l$ будет выполнятся   $ \rho(s, t) = 1$
+    \end{theorem*}
+    \begin{proof}
+        Пусть не так, тогда $\rho(s, t) = 0 \mbox{ либо } 2$.
+        \newline
+        Пусть $\rho(s, t) = 0$. Поскольку существует положительный поток, существует и путь $s \rightsquigarrow t$. Тогда как минимум один раз придётся перейти из множества $S$ в множество $T$. То есть хотя бы одно ребро весом 1. Противоречие.
+        \newline
+        Пусть $\rho(s, t) = 2$. Тогда возьмём кратчайший путь $s \rightsquigarrow t$. Разделим его на 3 части: до первого ребра длиной $1$, оставшаяся часть до второго ребра длиной $1$ и всё остальное.
+        Мы установили веса 1 рёбрам, которые соединяют вершины их разных множеста минимального разреза. Тогда понятно, что данный разрез не минимальный, так как можно уменьшить его, добавив вершины второй части пути в множество $S$. Противоречие с минимальностью.
+    \end{proof}
+    Применив два утверждения и Теорему Форда-Фалкерсона получаем:
+    \begin{equation*}
+        \frac{V(G)}{\rho(s, t)} = \frac{c(S, T)}{1} = c(S, T) = |f_{max}|
+    \end{equation*}
+\section*{Задача \textnumero 2}
+    Построим сеть следующим образом.
+    \begin{itemize}
+        \item Заведём вершины $s$ и $t$ - исток и сток
+        \item Для каждой команды завёдем по вершине, в каждую из них проведём ребро $(s, v)$ с \textit{capacity} $ = a_v$
+        \item Заведём $\binom{n}{2}$ вершин, для всех возможных матчей, матч характеризуется двумя командами, которые принимали участие,  в вершину матча для команд $u$ и $v$ обозначенную за $m$ проведём рёбра $(u, m)$ и $(v, m)$ с \textit{capacity} $ = 1$
+        \item Так же из всех вершин для матчей добавим по ребру в сток с \textit{capacity} $ = 1$
+    \end{itemize}
+    Исходя из того, что такое величина потока в сети, понятно, что если максимальный поток в сети равен $\binom{n}{2}$, то такой турнир мог существовать. Возьмём вершину для конкретного матча, посмотрим какие по какому ребру в него пришёл поток величины $1$. Команда соответсвующая этой вершине, из которой пришёл поток и выиграла этот матч. 
+    
+    По любому потоку в данной сети, величина которого $\binom{n}{2}$, мы можем однозначно определить результаты матчей. Так же, по любому корректному турниру, можем построить сеть с потоком в ней(выставлять потоки. Имеет место биекция между турниром и потоком в сети.
+\section*{Задача \textnumero 3}
+    Формально, в задаче нужно максимизировать следующую сумму:
+    \begin{equation*}
+        \sum_{v \in V} a_v \longrightarrow max
+    \end{equation*}
+    учитывая, что если взяли вершину $v$, то нужно взять все достижимые из неё вершины.
+    Сведём тождественными преобразованиями к немного более удобной для решения потоками сумме:
+    \begin{multline*}
+        \sum_{v \in V} a_v =
+        \sum_{\substack{v \in A, \\ a_v \geq 0}}a_v + \sum_{\substack{v \in A, \\ a_v < 0}} a_v = \sum_{\substack{v \in A, \\ a_v \geq 0}}a_v + \sum_{\substack{v \in A, \\ a_v < 0}} a_v + \sum_{a_v \geq 0} a_v - \sum_{a_v \geq 0} a_v =
+        \\ 
+        = \left( \sum_{\substack{v \in A, \\ a_v < 0}} a_v - \sum_{\substack{v \notin A, \\ a_v > 0}} a_v +  \underbrace{\sum_{a_v \geq 0} a_v}_{const} \right) \longrightarrow max \Longleftrightarrow \left( \sum_{\substack{v \notin A, \\ a_v > 0}} a_v - \sum_{\substack{v \in A, \\ a_v < 0}} a_v   \right) \longrightarrow min
+    \end{multline*}
+    Теперь попробуем построить сеть, в которой величина разреза будет задаваться именно такой формулой.
+    Построим сеть следующим образом:
+    \begin{itemize}
+        \item ребро $(s, v$) -- \textit{capacity}  $ = a_v$, если $a_v \geq 0$
+        \item ребро $(v, u)$ -- \textit{capacity} $ = \infty $, если $(v, u) \in E$
+        \item ребро $(v, t)$ -- \textit{capacity} $ = -a_v$, если $a_v < 0$
+    \end{itemize}
+    Рёбра с \textit{capacity} $ = \infty$ необходимы, для того чтобы выполнялось свойство : $$v \in A \Longrightarrow \forall u, u \mbox{ достижима из } v: u \in A $$ 
+    Действительно, возьмём минимальный разрез в такой сети. В нём(имеются в виду рёбра соединяющие две вершины разных множеств разреза) не может быть рёбер с бесконечной \textit{capacity}, так как существует разрез
+    $$ \langle S, T \rangle : S = \{s\} \cup V, T = \{t\}$$ 
+    размер которого очевидно конечный, ведь он содержит только рёбра из вершин с отрицательными значения, \textit{capacity} которых положителен по построению сети. Это значит, что рёбра, соединяющие вершины их разных множеств разреза, будут иметь положительные значения, рёбра с бесконечным \textit{capacity} будут находиться ``внутри'' множеств. Получается, что вышеописанная сумма, заменив в ней $A$ на $S$, и будет задавать размер разреза в данной сети, ведь из вершин множества $S$ исходят какие-то рёбра в вершины с положительными значениями $a_i$ и в какие-то с отрицательными.
+    \newline
+    Теперь просто найдём минимальный разрез в таком графе, который по Теореме Форда-Фалкерсона равен максимальному потоку.\newline
+    \textbf{Важное замечание :} множество $S$ разреза будет соответствовать искомому множеству $A$, это и будет гарантировать выполнение вышеописанного свойства включения вершин в множество, так как все бесконечные рёбра находятся внутри множеств разреза, значит если взяли вершину в множество, то взяли и все достижимые.
+\end{document}
